@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1010139221451",
+    "firebase_url": "https://udacity-final-project-729f3.firebaseio.com",
+    "project_id": "udacity-final-project-729f3",
+    "storage_bucket": "udacity-final-project-729f3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1010139221451:android:c28ef592cef71cc4",
+        "android_client_info": {
+          "package_name": "br.com.klauskpm.inventory"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1010139221451-3p3p97td0oi46s7d7q0s611morm7s7st.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.klauskpm.inventory",
+            "certificate_hash": "27159E9BEEC78DFD56F2AA305C0E6109C9088725"
+          }
+        },
+        {
+          "client_id": "1010139221451-r65rvj6r3cnr1ge0iuec0lmvpc4omgui.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgS3dZoyZAjnuDiGBvv1d-S4X_WiPePPY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1010139221451-r65rvj6r3cnr1ge0iuec0lmvpc4omgui.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
