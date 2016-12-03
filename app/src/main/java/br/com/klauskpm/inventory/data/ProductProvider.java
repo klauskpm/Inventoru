@@ -12,6 +12,8 @@ import android.util.Log;
 
 import br.com.klauskpm.inventory.data.ProductContract.ProductEntry;
 
+import static android.R.attr.name;
+
 /**
  * Created by Kazlauskas on 30/11/2016.
  */
@@ -99,9 +101,9 @@ public class ProductProvider extends ContentProvider {
     }
 
     private Uri insertProduct (Uri uri, ContentValues values) {
-        String name = values.getAsString(ProductEntry.COLUMN_PRODUCT_NAME);
-        if (name == null) {
-            throw new IllegalArgumentException("Product requires a name");
+        String title = values.getAsString(ProductEntry.COLUMN_PRODUCT_TITLE);
+        if (title == null) {
+            throw new IllegalArgumentException("Product requires a title");
         }
 
         Integer quantity = values.getAsInteger(ProductEntry.COLUMN_PRODUCT_QUANTITY);
@@ -175,21 +177,21 @@ public class ProductProvider extends ContentProvider {
     }
 
     private int updatePet(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        if (values.containsKey(ProductEntry.COLUMN_PRODUCT_NAME)) {
-            String name = values.getAsString(ProductEntry.COLUMN_PRODUCT_NAME);
-            if (name == null) {
-                throw new IllegalArgumentException("Product requires a name");
+        if (values.containsKey(ProductEntry.COLUMN_PRODUCT_TITLE)) {
+            String title = values.getAsString(ProductEntry.COLUMN_PRODUCT_TITLE);
+            if (title == null) {
+                throw new IllegalArgumentException("Product requires a title");
             }
         }
 
-        if (values.containsKey(ProductEntry.COLUMN_PRODUCT_NAME)) {
+        if (values.containsKey(ProductEntry.COLUMN_PRODUCT_TITLE)) {
             Integer quantity = values.getAsInteger(ProductEntry.COLUMN_PRODUCT_QUANTITY);
             if (quantity != null && quantity < 0) {
                 throw new IllegalArgumentException("Product requires a valid quantity");
             }
         }
 
-        if (values.containsKey(ProductEntry.COLUMN_PRODUCT_NAME)) {
+        if (values.containsKey(ProductEntry.COLUMN_PRODUCT_TITLE)) {
             Integer price = values.getAsInteger(ProductEntry.COLUMN_PRODUCT_PRICE);
             if (price != null && price < 0) {
                 throw new IllegalArgumentException("Product requires a valid price");

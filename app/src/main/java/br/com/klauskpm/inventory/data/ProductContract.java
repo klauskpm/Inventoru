@@ -28,7 +28,7 @@ public final class ProductContract {
         public static final String TABLE_NAME = "products";
 
         public static final String _ID = BaseColumns._ID;
-        public static final String COLUMN_PRODUCT_NAME = "name";
+        public static final String COLUMN_PRODUCT_TITLE = "title";
         public static final String COLUMN_PRODUCT_QUANTITY = "quantity";
         public static final String COLUMN_PRODUCT_PRICE = "price";
         public static final String COLUMN_PRODUCT_IMAGE = "image";

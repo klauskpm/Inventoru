@@ -38,7 +38,7 @@ public class ProductCursorAdapter extends CursorAdapter {
         ViewHolder holder = (ViewHolder) view.getTag();
 
         String title = cursor.getString(cursor
-                .getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_NAME));
+                .getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_TITLE));
         String quantity = cursor.getString(cursor
                 .getColumnIndexOrThrow(ProductEntry.COLUMN_PRODUCT_QUANTITY));
         String price = cursor.getString(cursor
