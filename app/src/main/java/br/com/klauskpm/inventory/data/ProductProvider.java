@@ -134,7 +134,57 @@ public class ProductProvider extends ContentProvider {
     }
 
     @Override
-    public int update(Uri uri, ContentValues contentValues, String s, String[] strings) {
-        return 0;
+    public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case PRODUCTS:
+                return updatePet(uri, contentValues, selection, selectionArgs);
+
+            case PRODUCT_ID:
+                selection = ProductEntry._ID + "=?";
+                selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
+                return updatePet(uri, contentValues, selection, selectionArgs);
+
+            default:
+                throw new IllegalArgumentException("Update is not supported for " + uri);
+        }
+    }
+
+    private int updatePet(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        if (values.containsKey(ProductEntry.COLUMN_PRODUCT_NAME)) {
+            String name = values.getAsString(ProductEntry.COLUMN_PRODUCT_NAME);
+            if (name == null) {
+                throw new IllegalArgumentException("Product requires a name");
+            }
+        }
+
+        if (values.containsKey(ProductEntry.COLUMN_PRODUCT_NAME)) {
+            Integer quantity = values.getAsInteger(ProductEntry.COLUMN_PRODUCT_QUANTITY);
+            if (quantity != null && quantity < 0) {
+                throw new IllegalArgumentException("Product requires a valid quantity");
+            }
+        }
+
+        if (values.containsKey(ProductEntry.COLUMN_PRODUCT_NAME)) {
+            Integer price = values.getAsInteger(ProductEntry.COLUMN_PRODUCT_PRICE);
+            if (price != null && price < 0) {
+                throw new IllegalArgumentException("Product requires a valid price");
+            }
+        }
+
+        if (values.size() == 0) {
+            return 0;
+        }
+
+        SQLiteDatabase database = mInventoryDbHelper.getWritableDatabase();
+
+        int rowsUpdated = database.update(ProductEntry.TABLE_NAME, values, selection,
+                selectionArgs);
+
+        if (rowsUpdated != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return rowsUpdated;
     }
 }
