@@ -1,5 +1,11 @@
 package br.com.klauskpm.inventory;
 
+import android.app.LoaderManager.LoaderCallbacks;
+import android.content.ContentValues;
+import android.content.CursorLoader;
+import android.content.Loader;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -57,12 +63,23 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.insert_dummy) {
+            insertDummyProduct();
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    private void insertDummyProduct () {
+        ContentValues values = new ContentValues();
+        values.put(ProductEntry.COLUMN_PRODUCT_TITLE, "PSVR");
+        values.put(ProductEntry.COLUMN_PRODUCT_PRICE, 400);
+        values.put(ProductEntry.COLUMN_PRODUCT_QUANTITY, 10);
+
+        Uri newUri = getContentResolver().insert(ProductEntry.CONTENT_URI, values);
+    }
+
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
         switch (id) {
