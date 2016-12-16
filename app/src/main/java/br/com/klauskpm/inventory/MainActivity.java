@@ -10,7 +10,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
-public class MainActivity extends AppCompatActivity {
+import br.com.klauskpm.inventory.data.ProductContract.ProductEntry;
+
+public class MainActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+
+    public static final int PROCUDT_LOADER = 0;
     private ProductCursorAdapter mAdapter;
 
     @Override
@@ -34,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        getLoaderManager().initLoader(PROCUDT_LOADER, null, this);
     }
 
     @Override
@@ -56,5 +62,39 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
+        switch (id) {
+            case PROCUDT_LOADER:
+                String[] projection = {
+                        ProductEntry._ID,
+                        ProductEntry.COLUMN_PRODUCT_TITLE,
+                        ProductEntry.COLUMN_PRODUCT_PRICE,
+                        ProductEntry.COLUMN_PRODUCT_QUANTITY
+                };
+
+                return new CursorLoader(
+                        this,
+                        ProductEntry.CONTENT_URI,
+                        projection,
+                        null,
+                        null,
+                        null
+                );
+
+            default:
+                return null;
+        }
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        mAdapter.swapCursor(cursor);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mAdapter.swapCursor(null);
     }
 }
