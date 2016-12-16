@@ -12,8 +12,6 @@ import android.util.Log;
 
 import br.com.klauskpm.inventory.data.ProductContract.ProductEntry;
 
-import static android.R.attr.name;
-
 /**
  * Created by Kazlauskas on 30/11/2016.
  */
