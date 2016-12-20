@@ -1,6 +1,7 @@
 package br.com.klauskpm.inventory;
 
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.Intent;
@@ -9,7 +10,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -40,9 +40,9 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-                startActivity(intent);
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long id) {
+                Uri uri = ContentUris.withAppendedId(ProductEntry.CONTENT_URI, id);
+                startDetailActivity(uri);
             }
         });
 
@@ -50,12 +50,21 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                startDetailActivity();
             }
         });
 
         getLoaderManager().initLoader(PROCUDT_LOADER, null, this);
+    }
+
+    private void startDetailActivity () {
+        startDetailActivity(null);
+    }
+
+    private void startDetailActivity (Uri uri) {
+        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+        if (uri != null) intent.setData(uri);
+        startActivity(intent);
     }
 
     @Override
