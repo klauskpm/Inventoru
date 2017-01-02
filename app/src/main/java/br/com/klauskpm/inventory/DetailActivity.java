@@ -7,8 +7,10 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -65,6 +67,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderCallbacks
             String quantityText = "" + quantity;
             mQuantityTextView.setText(quantityText);
         });
+
+        deleteButton.setOnClickListener(this::showDeleteConfirmationDialog);
     }
 
     private int getQuantity() {
@@ -76,6 +80,23 @@ public class DetailActivity extends AppCompatActivity implements LoaderCallbacks
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_detail, menu);
         return true;
+    }
+
+    private void showDeleteConfirmationDialog (View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Deleting confirmation message");
+
+        builder.setPositiveButton("Delete", (dialog, id) -> deleteProduct());
+        builder.setNegativeButton("Cancel", (dialog, id) -> {
+            if (dialog != null) dialog.dismiss();
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    private void deleteProduct() {
+
     }
 
     @Override
