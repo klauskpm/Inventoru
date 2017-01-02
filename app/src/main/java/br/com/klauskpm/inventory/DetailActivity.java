@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -116,7 +117,16 @@ public class DetailActivity extends AppCompatActivity implements LoaderCallbacks
     }
 
     private void deleteProduct() {
+        if (mProductUri != null) {
+            int rowsDeleted = getContentResolver().delete(mProductUri, null, null);
 
+            if (rowsDeleted == 0) {
+                Toast.makeText(this, "Failed to delete product", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Product deleted", Toast.LENGTH_LONG).show();
+                finish();
+            }
+        }
     }
 
     @Override
