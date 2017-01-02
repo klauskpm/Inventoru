@@ -55,13 +55,15 @@ public class DetailActivity extends AppCompatActivity implements LoaderCallbacks
         incrementQuantityButton.setOnClickListener(view -> {
             int quantity = getQuantity();
             if (quantity < 100) quantity++;
-            mQuantityTextView.setText("" + quantity);
+            String quantityText = "" + quantity;
+            mQuantityTextView.setText(quantityText);
         });
 
         decrementQuantityButton.setOnClickListener(view -> {
             int quantity = getQuantity();
             if (quantity > 0) quantity--;
-            mQuantityTextView.setText("" + quantity);
+            String quantityText = "" + quantity;
+            mQuantityTextView.setText(quantityText);
         });
     }
 
