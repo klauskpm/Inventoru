@@ -25,8 +25,6 @@ public class DetailActivity extends AppCompatActivity implements LoaderCallbacks
     private Uri mProductUri;
 
     private EditText mTitleEditText;
-    private Button mIncrementQuantityButton;
-    private Button mDecrementQuantityButton;
     private TextView mQuantityTextView;
 
     @Override
@@ -48,8 +46,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderCallbacks
         setTitle(getString(actionTitle));
 
         mTitleEditText = (EditText) findViewById(R.id.title);
-        mIncrementQuantityButton = (Button) findViewById(R.id.increment_product_quantity);
-        mDecrementQuantityButton = (Button) findViewById(R.id.decrement_product_quantity);
+        Button incrementQuantityButton = (Button) findViewById(R.id.increment_product_quantity);
+        Button decrementQuantityButton = (Button) findViewById(R.id.decrement_product_quantity);
         mQuantityTextView = (TextView) findViewById(R.id.quantity);
     }
 
