@@ -15,6 +15,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import br.com.klauskpm.inventory.data.ProductContract.ProductEntry;
 
 public class DetailActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
@@ -85,7 +89,17 @@ public class DetailActivity extends AppCompatActivity implements LoaderCallbacks
     }
 
     private void orderSupply (View view) {
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault());
+        String formattedDate = simpleDateFormat.format(date);
+        String subject = "[SUPPLY] Order at " + formattedDate;
 
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:"));
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 
     private void showDeleteConfirmationDialog (View view) {
