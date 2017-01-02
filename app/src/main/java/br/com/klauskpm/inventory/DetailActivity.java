@@ -49,6 +49,22 @@ public class DetailActivity extends AppCompatActivity implements LoaderCallbacks
         Button incrementQuantityButton = (Button) findViewById(R.id.increment_product_quantity);
         Button decrementQuantityButton = (Button) findViewById(R.id.decrement_product_quantity);
         mQuantityTextView = (TextView) findViewById(R.id.quantity);
+
+        incrementQuantityButton.setOnClickListener(view -> {
+            int quantity = getQuantity();
+            if (quantity < 100) quantity++;
+            mQuantityTextView.setText("" + quantity);
+        });
+
+        decrementQuantityButton.setOnClickListener(view -> {
+            int quantity = getQuantity();
+            if (quantity > 0) quantity--;
+            mQuantityTextView.setText("" + quantity);
+        });
+    }
+
+    private int getQuantity() {
+        return Integer.parseInt(mQuantityTextView.getText().toString());
     }
 
     @Override
