@@ -4,4 +4,6 @@
     <string name="insert_dummy">Insert Dummy</string>
     <string name="new_product_activity_title">New Product</string>
     <string name="update_product_activity_title">Update Product</string>
+    <string name="delete_product_button">Delete</string>
+    <string name="order_supplies_button">Order supplies</string>
 </resources>
