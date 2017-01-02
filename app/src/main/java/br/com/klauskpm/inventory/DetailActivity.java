@@ -48,6 +48,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderCallbacks
         mTitleEditText = (EditText) findViewById(R.id.title);
         Button incrementQuantityButton = (Button) findViewById(R.id.increment_product_quantity);
         Button decrementQuantityButton = (Button) findViewById(R.id.decrement_product_quantity);
+        Button deleteButton  = (Button) findViewById(R.id.delete);
+        Button orderSupplyButton = (Button) findViewById(R.id.order_supplies);
         mQuantityTextView = (TextView) findViewById(R.id.quantity);
 
         incrementQuantityButton.setOnClickListener(view -> {
