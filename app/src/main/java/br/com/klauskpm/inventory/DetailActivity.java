@@ -84,7 +84,14 @@ public class DetailActivity extends AppCompatActivity implements LoaderCallbacks
     }
 
     private int getQuantity() {
-        return Integer.parseInt(mQuantityTextView.getText().toString());
+        int quantity = 0;
+        String quantityString = mQuantityTextView.getText().toString().trim();
+
+        if (!TextUtils.isEmpty(quantityString)) {
+            quantity = Integer.parseInt(quantityString);
+        }
+
+        return quantity;
     }
 
     @Override
