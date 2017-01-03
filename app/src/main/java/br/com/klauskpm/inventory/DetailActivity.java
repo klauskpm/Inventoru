@@ -32,6 +32,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderCallbacks
     private Uri mProductUri;
 
     private EditText mTitleEditText;
+    private EditText mPriceEditText;
     private TextView mQuantityTextView;
 
     @Override
@@ -53,11 +54,12 @@ public class DetailActivity extends AppCompatActivity implements LoaderCallbacks
         setTitle(getString(actionTitle));
 
         mTitleEditText = (EditText) findViewById(R.id.title);
+        mPriceEditText = (EditText) findViewById(R.id.price);
+        mQuantityTextView = (TextView) findViewById(R.id.quantity);
         Button incrementQuantityButton = (Button) findViewById(R.id.increment_product_quantity);
         Button decrementQuantityButton = (Button) findViewById(R.id.decrement_product_quantity);
         Button deleteButton  = (Button) findViewById(R.id.delete);
         Button orderSupplyButton = (Button) findViewById(R.id.order_supplies);
-        mQuantityTextView = (TextView) findViewById(R.id.quantity);
 
         incrementQuantityButton.setOnClickListener(view -> {
             int quantity = getQuantity();
@@ -164,6 +166,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderCallbacks
             int columnImageIndex = cursor.getColumnIndex(ProductEntry.COLUMN_PRODUCT_IMAGE);
 
             mTitleEditText.setText(cursor.getString(columnTitleIndex));
+            mPriceEditText.setText(cursor.getInt(columnPriceIndex) + "");
             mQuantityTextView.setText(cursor.getInt(columnQuantityIndex) + "");
         }
     }
