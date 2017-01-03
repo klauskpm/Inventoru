@@ -1,6 +1,7 @@
 package br.com.klauskpm.inventory;
 
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -9,7 +10,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -116,6 +119,63 @@ public class DetailActivity extends AppCompatActivity implements LoaderCallbacks
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    private void saveProduct () {
+        String title = mTitleEditText.getText().toString().trim();
+        String quantityString = mQuantityTextView.getText().toString().trim();
+        String priceString = mPriceEditText.getText().toString().trim();
+
+        int quantity = 0;
+        int price = 0;
+
+        if (mProductUri == null && TextUtils.isEmpty(title) && TextUtils.isEmpty(quantityString)
+                && TextUtils.isEmpty(priceString)) {
+            return;
+        }
+
+        if (!TextUtils.isEmpty(quantityString)) quantity = Integer.parseInt(quantityString);
+        if (!TextUtils.isEmpty(priceString)) price = Integer.parseInt(priceString);
+
+        ContentValues values = new ContentValues();
+        values.put(ProductEntry.COLUMN_PRODUCT_TITLE, title);
+        values.put(ProductEntry.COLUMN_PRODUCT_QUANTITY, quantity);
+        values.put(ProductEntry.COLUMN_PRODUCT_PRICE, price);
+
+        if (mProductUri != null) updateProduct(values);
+        else insertProduct(values);
+    }
+
+    private void insertProduct(ContentValues values) {
+        Uri newProductUri = getContentResolver().insert(ProductEntry.CONTENT_URI, values);
+
+        if (newProductUri == null) {
+            Toast.makeText(this, "Failed to insert the product", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Product was successfully inserted", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.save:
+                saveProduct();
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void updateProduct (ContentValues values) {
+        int updatedRows = getContentResolver().update(mProductUri, values, null, null);
+
+        if (updatedRows == 0) {
+            Toast.makeText(this, "Failed to update the product", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Product was successfully updated", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void deleteProduct() {
