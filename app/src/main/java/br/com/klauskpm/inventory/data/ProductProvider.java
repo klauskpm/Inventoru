@@ -7,6 +7,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -72,7 +73,7 @@ public class ProductProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public String getType(Uri uri) {
+    public String getType(@NonNull Uri uri) {
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case PRODUCTS:
@@ -88,7 +89,7 @@ public class ProductProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Uri insert(Uri uri, ContentValues contentValues) {
+    public Uri insert(@NonNull Uri uri, ContentValues contentValues) {
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case PRODUCTS:
@@ -99,20 +100,9 @@ public class ProductProvider extends ContentProvider {
     }
 
     private Uri insertProduct (Uri uri, ContentValues values) {
-        String title = values.getAsString(ProductEntry.COLUMN_PRODUCT_TITLE);
-        if (title == null) {
-            throw new IllegalArgumentException("Product requires a title");
-        }
-
-        Integer quantity = values.getAsInteger(ProductEntry.COLUMN_PRODUCT_QUANTITY);
-        if (quantity != null && quantity < 0) {
-            throw new IllegalArgumentException("Product requires a valid quantity");
-        }
-
-        Integer price = values.getAsInteger(ProductEntry.COLUMN_PRODUCT_PRICE);
-        if (price != null && price < 0) {
-            throw new IllegalArgumentException("Product requires a valid price");
-        }
+        validateProductTitle(values);
+        validateProductQuantity(values);
+        validateProductPrice(values);
 
         SQLiteDatabase database = mInventoryDbHelper.getWritableDatabase();
 
@@ -129,7 +119,7 @@ public class ProductProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(Uri uri, String selection, String[] selectionArgs) {
+    public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
         SQLiteDatabase database = mInventoryDbHelper.getWritableDatabase();
 
         int rowsDeleted = 0;
@@ -150,15 +140,13 @@ public class ProductProvider extends ContentProvider {
                 throw new IllegalArgumentException("Deletion is not supported for " + uri);
         }
 
-        if (rowsDeleted != 0) {
-            getContext().getContentResolver().notifyChange(uri, null);
-        }
+        if (rowsDeleted != 0) getContext().getContentResolver().notifyChange(uri, null);
 
         return rowsDeleted;
     }
 
     @Override
-    public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
+    public int update(@NonNull Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case PRODUCTS:
@@ -175,40 +163,44 @@ public class ProductProvider extends ContentProvider {
     }
 
     private int updatePet(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        if (values.containsKey(ProductEntry.COLUMN_PRODUCT_TITLE)) {
-            String title = values.getAsString(ProductEntry.COLUMN_PRODUCT_TITLE);
-            if (title == null) {
-                throw new IllegalArgumentException("Product requires a title");
-            }
-        }
+        if (values.containsKey(ProductEntry.COLUMN_PRODUCT_TITLE)) validateProductTitle(values);
 
-        if (values.containsKey(ProductEntry.COLUMN_PRODUCT_TITLE)) {
-            Integer quantity = values.getAsInteger(ProductEntry.COLUMN_PRODUCT_QUANTITY);
-            if (quantity != null && quantity < 0) {
-                throw new IllegalArgumentException("Product requires a valid quantity");
-            }
-        }
+        if (values.containsKey(ProductEntry.COLUMN_PRODUCT_QUANTITY))
+            validateProductQuantity(values);
 
-        if (values.containsKey(ProductEntry.COLUMN_PRODUCT_TITLE)) {
-            Integer price = values.getAsInteger(ProductEntry.COLUMN_PRODUCT_PRICE);
-            if (price != null && price < 0) {
-                throw new IllegalArgumentException("Product requires a valid price");
-            }
-        }
+        if (values.containsKey(ProductEntry.COLUMN_PRODUCT_PRICE)) validateProductPrice(values);
 
-        if (values.size() == 0) {
-            return 0;
-        }
+        if (values.size() == 0) return 0;
 
         SQLiteDatabase database = mInventoryDbHelper.getWritableDatabase();
 
         int rowsUpdated = database.update(ProductEntry.TABLE_NAME, values, selection,
                 selectionArgs);
 
-        if (rowsUpdated != 0) {
-            getContext().getContentResolver().notifyChange(uri, null);
-        }
+
+        if (rowsUpdated != 0) getContext().getContentResolver().notifyChange(uri, null);
 
         return rowsUpdated;
+    }
+
+    private void validateProductPrice(ContentValues values) {
+        Integer price = values.getAsInteger(ProductEntry.COLUMN_PRODUCT_PRICE);
+        if (price != null && price <= 0) {
+            throw new IllegalArgumentException("Product must have a price");
+        }
+    }
+
+    private void validateProductQuantity(ContentValues values) {
+        Integer quantity = values.getAsInteger(ProductEntry.COLUMN_PRODUCT_QUANTITY);
+        if (quantity != null && quantity < 0) {
+            throw new IllegalArgumentException("Product requires a valid quantity");
+        }
+    }
+
+    private void validateProductTitle (ContentValues values) {
+        String title = values.getAsString(ProductEntry.COLUMN_PRODUCT_TITLE);
+        if (title == null) {
+            throw new IllegalArgumentException("Product requires a title");
+        }
     }
 }
