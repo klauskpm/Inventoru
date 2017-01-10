@@ -151,8 +151,13 @@ public class DetailActivity extends AppCompatActivity implements LoaderCallbacks
         values.put(ProductEntry.COLUMN_PRODUCT_QUANTITY, quantity);
         values.put(ProductEntry.COLUMN_PRODUCT_PRICE, price);
 
-        if (mProductUri != null) updateProduct(values);
-        else insertProduct(values);
+        try {
+            if (mProductUri != null) updateProduct(values);
+            else insertProduct(values);
+        } catch (IllegalArgumentException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         finish();
     }
