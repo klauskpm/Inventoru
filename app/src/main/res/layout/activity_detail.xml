@@ -16,6 +16,8 @@
         android:id="@+id/price"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number"
         tools:text="$0.00" />
 
     <LinearLayout
@@ -48,10 +50,10 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/delete"
+            android:id="@+id/save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/delete_product_button" />
+            android:text="Create" />
 
         <Button
             android:id="@+id/order_supplies"

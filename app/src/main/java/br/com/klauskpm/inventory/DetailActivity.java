@@ -31,6 +31,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderCallbacks
 
     public static final int NEW_PRODUCT_TITLE = R.string.new_product_activity_title;
     public static final int UPDATE_PRODUCT_TITLE = R.string.update_product_activity_title;
+    public static final int UPDATE_PRODUCT_BUTTON_TITLE = R.string.update_product_button_title;
 
     private Uri mProductUri;
 
@@ -47,22 +48,23 @@ public class DetailActivity extends AppCompatActivity implements LoaderCallbacks
         mProductUri = intent.getData();
         int actionTitle = NEW_PRODUCT_TITLE;
 
+        mTitleEditText = (EditText) findViewById(R.id.title);
+        mPriceEditText = (EditText) findViewById(R.id.price);
+        mQuantityTextView = (TextView) findViewById(R.id.quantity);
+        Button incrementQuantityButton = (Button) findViewById(R.id.increment_product_quantity);
+        Button decrementQuantityButton = (Button) findViewById(R.id.decrement_product_quantity);
+        Button saveButton  = (Button) findViewById(R.id.save);
+        Button orderSupplyButton = (Button) findViewById(R.id.order_supplies);
+
         if (mProductUri != null) {
             actionTitle = UPDATE_PRODUCT_TITLE;
+            saveButton.setText(UPDATE_PRODUCT_BUTTON_TITLE);
             getLoaderManager().initLoader(DETAIL_PRODUCT_LOADER, null, this);
         } else {
             invalidateOptionsMenu();
         }
 
         setTitle(getString(actionTitle));
-
-        mTitleEditText = (EditText) findViewById(R.id.title);
-        mPriceEditText = (EditText) findViewById(R.id.price);
-        mQuantityTextView = (TextView) findViewById(R.id.quantity);
-        Button incrementQuantityButton = (Button) findViewById(R.id.increment_product_quantity);
-        Button decrementQuantityButton = (Button) findViewById(R.id.decrement_product_quantity);
-        Button deleteButton  = (Button) findViewById(R.id.delete);
-        Button orderSupplyButton = (Button) findViewById(R.id.order_supplies);
 
         incrementQuantityButton.setOnClickListener(view -> {
             int quantity = getQuantity();
@@ -78,7 +80,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderCallbacks
             mQuantityTextView.setText(quantityText);
         });
 
-        deleteButton.setOnClickListener(this::showDeleteConfirmationDialog);
+        saveButton.setOnClickListener(this::saveProduct);
 
         orderSupplyButton.setOnClickListener(this::orderSupply);
     }
@@ -115,7 +117,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderCallbacks
         }
     }
 
-    private void showDeleteConfirmationDialog (View view) {
+    private void showDeleteConfirmationDialog () {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Deleting confirmation message");
 
@@ -128,7 +130,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderCallbacks
         alertDialog.show();
     }
 
-    private void saveProduct () {
+    private void saveProduct (View view) {
         String title = mTitleEditText.getText().toString().trim();
         String quantityString = mQuantityTextView.getText().toString().trim();
         String priceString = mPriceEditText.getText().toString().trim();
@@ -149,8 +151,15 @@ public class DetailActivity extends AppCompatActivity implements LoaderCallbacks
         values.put(ProductEntry.COLUMN_PRODUCT_QUANTITY, quantity);
         values.put(ProductEntry.COLUMN_PRODUCT_PRICE, price);
 
-        if (mProductUri != null) updateProduct(values);
-        else insertProduct(values);
+        try {
+            if (mProductUri != null) updateProduct(values);
+            else insertProduct(values);
+        } catch (IllegalArgumentException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        finish();
     }
 
     private void insertProduct(ContentValues values) {
@@ -166,9 +175,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderCallbacks
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.save:
-                saveProduct();
-                finish();
+            case R.id.delete:
+                showDeleteConfirmationDialog();
                 return true;
         }
 
