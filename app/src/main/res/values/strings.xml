@@ -6,4 +6,5 @@
     <string name="update_product_activity_title">Update Product</string>
     <string name="delete_product_button">Delete</string>
     <string name="order_supplies_button">Order supplies</string>
+    <string name="update_product_button_title">Update</string>
 </resources>

@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="br.com.klauskpm.inventory.DetailActivity">
     <item
-        android:id="@+id/save"
+        android:id="@+id/delete"
         android:orderInCategory="100"
-        android:title="Save Product"
+        android:title="@string/delete_product_button"
         app:showAsAction="never" />
 </menu>
