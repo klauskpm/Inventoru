@@ -14,8 +14,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import br.com.klauskpm.inventory.data.ProductContract.ProductEntry;
@@ -38,21 +36,13 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
 
         listView.setAdapter(mAdapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long id) {
-                Uri uri = ContentUris.withAppendedId(ProductEntry.CONTENT_URI, id);
-                startDetailActivity(uri);
-            }
+        listView.setOnItemClickListener((adapterView, view, i, id) -> {
+            Uri uri = ContentUris.withAppendedId(ProductEntry.CONTENT_URI, id);
+            startDetailActivity(uri);
         });
 
         FloatingActionButton createButton = (FloatingActionButton) findViewById(R.id.create);
-        createButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startDetailActivity();
-            }
-        });
+        createButton.setOnClickListener(view -> startDetailActivity());
 
         getLoaderManager().initLoader(PROCUDT_LOADER, null, this);
     }
@@ -69,22 +59,15 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.insert_dummy) {
-            insertDummyProduct();
-        }
+        if (id == R.id.insert_dummy) insertDummyProduct();
 
         return super.onOptionsItemSelected(item);
     }
