@@ -26,7 +26,7 @@ public class ProductCursorAdapter extends CursorAdapter {
 
         holder.title = (TextView) view.findViewById(R.id.title);
         holder.quantity = (TextView) view.findViewById(R.id.quantity);
-        holder.price = (TextView) view.findViewById(R.id.price);
+        holder.price = (TextView) view.findViewById(R.id.item_price);
 
         view.setTag(holder);
 

@@ -19,7 +19,7 @@
 
     <TextView
         tools:text="$ 4.99"
-        android:id="@+id/price"
+        android:id="@+id/item_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
