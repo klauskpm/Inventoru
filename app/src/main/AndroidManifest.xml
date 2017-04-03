@@ -40,6 +40,12 @@
         <provider
             android:name=".data.ProductProvider"
             android:authorities="br.com.klauskpm.inventory"
+            android:exported="false">
+        </provider>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="br.com.klauskpm.inventory.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

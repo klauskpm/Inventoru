@@ -6,12 +6,9 @@ import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -29,7 +26,6 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import br.com.klauskpm.inventory.data.ProductContract.ProductEntry;
 
@@ -43,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
     public static final String LOG_TAG = "MainActivity";
     private ProductCursorAdapter mAdapter;
 
-    private static final String FILE_PROVIDER_AUTHORITY = "br.com.klauskpm.inventory";
+    private static final String FILE_PROVIDER_AUTHORITY = "br.com.klauskpm.inventory.fileprovider";
 
     private static final String JPEG_FILE_PREFIX = "IMG_";
     private static final String JPEG_FILE_SUFFIX = ".jpg";
@@ -193,12 +189,12 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
         Intent intent;
         Log.e(LOG_TAG, "While is set and the ifs are worked through.");
 
-        if (Build.VERSION.SDK_INT < 19) {
-            intent = new Intent(Intent.ACTION_GET_CONTENT);
-        } else {
+//        if (Build.VERSION.SDK_INT < 19) {
+//            intent = new Intent(Intent.ACTION_GET_CONTENT);
+//        } else {
             intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
             intent.addCategory(Intent.CATEGORY_OPENABLE);
-        }
+//        }
 
         // Show only images, no videos or anything else
         Log.e(LOG_TAG, "Check write to external permissions");
@@ -221,13 +217,13 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<C
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
 
             // Solution taken from http://stackoverflow.com/a/18332000/3346625
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-                List<ResolveInfo> resInfoList = getPackageManager().queryIntentActivities(takePictureIntent, PackageManager.MATCH_DEFAULT_ONLY);
-                for (ResolveInfo resolveInfo : resInfoList) {
-                    String packageName = resolveInfo.activityInfo.packageName;
-                    grantUriPermission(packageName, mUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                }
-            }
+//            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+//                List<ResolveInfo> resInfoList = getPackageManager().queryIntentActivities(takePictureIntent, PackageManager.MATCH_DEFAULT_ONLY);
+//                for (ResolveInfo resolveInfo : resInfoList) {
+//                    String packageName = resolveInfo.activityInfo.packageName;
+//                    grantUriPermission(packageName, mUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//                }
+//            }
 
             if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
